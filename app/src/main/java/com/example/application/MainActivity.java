@@ -2,7 +2,11 @@ package com.example.application;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,6 +15,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.application.internet.RaspberryAPI;
 import com.example.application.internet.ServiceGenerator;
 import com.example.application.recycler_view.adapter.DevicesListAdapter;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -19,10 +24,15 @@ import io.reactivex.schedulers.Schedulers;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "Output";
+    // Views
     private SwipeRefreshLayout swipeContainer;
-    private Disposable disposable;
+    private FloatingActionButton fab;
     private RecyclerView rv;
+    // Adapters
     private DevicesListAdapter adapter;
+    // RxJava
+    private Disposable disposable;
+    // API
     private RaspberryAPI api;
 
 
@@ -32,18 +42,30 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         swipeContainer = findViewById(R.id.swipe_container);
-        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
-
         swipeContainer.setOnRefreshListener(this::getDeviceList);
+        swipeContainer.setColorSchemeResources(android.R.color.holo_orange_light,
+                android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_red_light);
 
         rv = findViewById(R.id.rv);
         rv.setHasFixedSize(true);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        rv.setLayoutManager(llm);
+        rv.setLayoutManager(new LinearLayoutManager(this));
 
+        fab = findViewById(R.id.floating_action_button);
+        rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
+                    fab.hide();
+                } else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
+                    fab.show();
+                }
+            }
+        });
+
+        //  Setup Raspberry Pi API
         api = ServiceGenerator.createService(RaspberryAPI.class);
 
         getDeviceList();

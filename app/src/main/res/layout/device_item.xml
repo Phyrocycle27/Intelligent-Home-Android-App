@@ -24,6 +24,4 @@
                 android:layout_height="wrap_content" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
-
-
 </LinearLayout>
