@@ -1,11 +1,11 @@
 package com.example.application.recycler_view.adapter;
 
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,12 +16,9 @@ import com.example.application.recycler_view.view_holder.DeviceViewHolder;
 
 import java.util.List;
 
-import static androidx.constraintlayout.widget.Constraints.TAG;
-
 public class DevicesListAdapter extends RecyclerView.Adapter<DeviceViewHolder> {
     private List<Output> devices;
-    private long DURATION = 200;
-    private boolean on_attach = true;
+    private String TAG = "ANIM";
 
     public DevicesListAdapter(List<Output> devices) {
         this.devices = devices;
@@ -38,39 +35,26 @@ public class DevicesListAdapter extends RecyclerView.Adapter<DeviceViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull DeviceViewHolder holder, int position) {
         holder.getNameView().setText(devices.get(position).getName());
-        setAnimation(holder.itemView, position);
+        Log.d(TAG, "onBindViewHolder: ");
     }
 
     @Override
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                Log.d(TAG, "onScrollStateChanged: Called " + newState);
-                on_attach = false;
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-        });
-
+        Log.d(TAG, "onAttachedToRecyclerView: ");
+        runAnimation(recyclerView);
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    // Этот "индусский код" нужно как-то переделать
-    private void setAnimation(View itemView, int position) {
-        if(!on_attach){
-            position = -1;
-        }
-        boolean isNotFirstItem = position == -1;
-        position++;
-        itemView.setAlpha(0.f);
-        AnimatorSet animatorSet = new AnimatorSet();
-        ObjectAnimator animator = ObjectAnimator.ofFloat(itemView, "alpha", 0.f, 0.5f, 1.0f);
-        ObjectAnimator.ofFloat(itemView, "alpha", 0.f).start();
-        animator.setStartDelay(isNotFirstItem ? DURATION / 2 : (position * DURATION / 3));
-        animator.setDuration(500);
-        animatorSet.play(animator);
-        animator.start();
+    private void runAnimation(RecyclerView recyclerView) {
+        final LayoutAnimationController controller =
+                AnimationUtils.loadLayoutAnimation(recyclerView.getContext(), R.anim.layout_animation_fall_down);
+
+        recyclerView.setLayoutAnimation(controller);
+        notifyDataSetChanged();
+        recyclerView.scheduleLayoutAnimation();
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -78,12 +62,14 @@ public class DevicesListAdapter extends RecyclerView.Adapter<DeviceViewHolder> {
     }
 
     public void clear() {
-        devices.clear();
-        notifyDataSetChanged();
+        if (!devices.isEmpty()) {
+            devices.clear();
+            notifyDataSetChanged();
+        }
     }
 
-    public void addAll(List<Output> devices) {
+    public void addAll(List<Output> devices, RecyclerView rv) {
         this.devices.addAll(devices);
-        notifyDataSetChanged();
+        runAnimation(rv);
     }
 }
