@@ -21,6 +21,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CreationDeviceActivity" />
+        <activity android:name=".CreationDeviceActivity" android:theme="@style/AppTheme" />
     </application>
 </manifest>

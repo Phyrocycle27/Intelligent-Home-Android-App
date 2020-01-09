@@ -1,16 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:elevation="16dp"
     android:layout_marginLeft="8dp"
     android:layout_marginTop="5dp"
     android:layout_marginRight="8dp"
     android:layout_marginBottom="5dp"
-    android:minHeight="100dp">
+    app:layout_constraintHeight_min="100dp">
 
-    <TextView
-        android:id="@+id/device_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="30sp" />
+    <RelativeLayout
+        android:id="@+id/device_item_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/device_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:maxLength="25"
+            android:text="@string/field_name"
+            android:textSize="24sp"
+            tools:ignore="RelativeOverlap" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switch_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="20dp"
+            app:useMaterialThemeColors="true" />
+    </RelativeLayout>
 </com.google.android.material.card.MaterialCardView>

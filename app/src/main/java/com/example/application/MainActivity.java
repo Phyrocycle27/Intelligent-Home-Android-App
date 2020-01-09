@@ -1,5 +1,6 @@
 package com.example.application;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -7,13 +8,11 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.application.internet.RaspberryAPI;
 import com.example.application.internet.ServiceGenerator;
-import com.example.application.recycler_view.SwipeController;
 import com.example.application.recycler_view.adapter.DevicesListAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -60,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
                 android.R.color.holo_red_light);
 
         fab = findViewById(R.id.floating_action_button);
+        fab.setOnClickListener(v -> startActivity(new Intent(this, CreationDeviceActivity.class)));
 
         rv = findViewById(R.id.rv);
         rv.setHasFixedSize(true);
@@ -75,9 +75,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(new SwipeController());
-        itemTouchhelper.attachToRecyclerView(rv);
-
         //  Setup Raspberry Pi API
         api = ServiceGenerator.createService(RaspberryAPI.class);
 
@@ -89,9 +86,11 @@ public class MainActivity extends AppCompatActivity {
         if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();
         }
+        adapter.destroyDisposable();
         super.onDestroy();
     }
 
+    // Internet
     private void getDeviceList() {
         disposable = api.getAll()
                 .subscribeOn(Schedulers.io())
