@@ -13,7 +13,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.application.R;
 import com.example.application.activities.devices.creation.DeviceCreationFragment;
-import com.example.application.activities.devices.list.DevicesListFragment;
 
 import java.util.Objects;
 
@@ -21,7 +20,6 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "Output";
     private static String DEVICE_CREATION = DeviceCreationFragment.class.getName();
-    private static String DEVICE_LIST = DevicesListFragment.class.getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,9 +80,6 @@ public class MainActivity extends AppCompatActivity {
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
 
         Log.d(TAG, "f instance is " + (f instanceof DeviceCreationFragment) + " f visible is " + Objects.requireNonNull(f).isVisible());
-        if (f instanceof DevicesListFragment && f.isVisible()) {
-            setToolbarTitle("Список устройств");
-        }
     }
 
     public void setToolbarTitle(String title) {

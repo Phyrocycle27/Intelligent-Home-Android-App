@@ -1,14 +1,11 @@
 package com.example.application.entity.signal;
 
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+
+@EqualsAndHashCode(of = {"id"})
+@AllArgsConstructor
 abstract class Signal {
 
-    private Integer outputId;
-
-    Signal(Integer outputId) {
-        this.outputId = outputId;
-    }
-
-    public Integer getOutputId() {
-        return outputId;
-    }
+    private final Integer id;
 }

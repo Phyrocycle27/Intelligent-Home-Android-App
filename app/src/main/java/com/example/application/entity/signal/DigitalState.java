@@ -1,15 +1,19 @@
 package com.example.application.entity.signal;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString
+@EqualsAndHashCode(callSuper = true)
 public class DigitalState extends Signal {
 
-    private Boolean digitalState;
+    private boolean digitalState;
 
-    public DigitalState(Integer outputId, Boolean digitalState) {
-        super(outputId);
+    public DigitalState(Integer id, boolean digitalState) {
+        super(id);
         this.digitalState = digitalState;
-    }
 
-    public Boolean getDigitalState() {
-        return digitalState;
     }
 }
