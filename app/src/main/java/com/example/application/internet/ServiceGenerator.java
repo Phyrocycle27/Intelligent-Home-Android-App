@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -30,15 +31,24 @@ public class ServiceGenerator {
     private static final HttpLoggingInterceptor logging = new HttpLoggingInterceptor()
             .setLevel(HttpLoggingInterceptor.Level.BODY);
 
-    private static Retrofit retrofit = builder.build();
+    private static Retrofit retrofit;
+
+    static {
+        httpClient.addInterceptor(logging)
+                .addInterceptor(chain -> {
+                    Request newRequest =
+                            chain.request().newBuilder()
+                                    .addHeader("Accept", "application/json")
+                                    .addHeader("Content-Type", "application/json")
+                                    .build();
+
+                    return chain.proceed(newRequest);
+                });
+        builder.client(httpClient.build());
+        retrofit = builder.build();
+    }
 
     public static <S> S createService(Class<S> serviceClass) {
-        if (!httpClient.interceptors().contains(logging)) {
-            httpClient.addInterceptor(logging);
-            builder.client(httpClient.build());
-            retrofit = builder.build();
-        }
-
         return retrofit.create(serviceClass);
     }
 }

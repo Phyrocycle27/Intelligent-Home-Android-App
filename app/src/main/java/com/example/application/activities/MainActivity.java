@@ -45,8 +45,6 @@ public class MainActivity extends AppCompatActivity {
             Fragment deviceCreationFrag = manager.findFragmentByTag(DEVICE_CREATION);
 
             if (deviceCreationFrag == null) {
-                Log.d(TAG, "Добавление фрагмента");
-
                 ft.add(R.id.fragment_container, new DeviceCreationFragment(), DEVICE_CREATION)
                         .hide(Objects.requireNonNull(manager.findFragmentById(R.id.devices_list_fragment)))
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
@@ -55,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
 
                 setToolbarTitle("Создание устройства");
             } else {
-                Log.d(TAG, "Удаление фрагмента");
                 goToBack();
             }
         }

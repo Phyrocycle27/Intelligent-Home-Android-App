@@ -1,4 +1,4 @@
-package com.example.application.internet;
+package com.example.application.internet.api;
 
 import com.example.application.entity.signal.DigitalState;
 import com.example.application.entity.signal.PwmSignal;
@@ -9,16 +9,17 @@ import retrofit2.http.GET;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
-public interface DeviceControlAPI {
-    @GET("outputs/control/digital")
+public interface DeviceSignalAPI {
+
+    @GET("devices/control/digital")
     Observable<DigitalState> getDigitalState(@Query("id") Integer id);
 
-    @PUT("outputs/control/digital")
+    @PUT("devices/control/digital")
     Observable<DigitalState> setDigitalState(@Body DigitalState state);
 
-    @GET("outputs/control/pwm")
+    @GET("devices/control/pwm")
     Observable<PwmSignal> getPwmSignal(@Query("id") Integer id);
 
-    @PUT("outputs/control/pwm")
+    @PUT("devices/control/pwm")
     Observable<PwmSignal> setPwmSignal(@Body PwmSignal signal);
 }
