@@ -1,5 +1,9 @@
 package com.example.application.internet;
 
+import com.example.application.entity.task.processing.objects.ProcessingObject;
+import com.example.application.entity.task.trigger.objects.TriggerObject;
+import com.example.application.internet.deserializer.ProcessingObjectTypeAdapter;
+import com.example.application.internet.deserializer.TriggerObjectTypeAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -19,6 +23,8 @@ public class ServiceGenerator {
             .createWithScheduler(Schedulers.io());
 
     private static final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(ProcessingObject.class, new ProcessingObjectTypeAdapter())
+            .registerTypeAdapter(TriggerObject.class, new TriggerObjectTypeAdapter())
             .setDateFormat("yyyy-MM-dd HH:mm:ss")
             .create();
 
