@@ -1,37 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:elevation="16dp"
-    android:layout_marginLeft="8dp"
-    android:layout_marginTop="5dp"
-    android:layout_marginRight="8dp"
-    android:layout_marginBottom="5dp"
-    app:layout_constraintHeight_min="100dp">
+    android:layout_marginStart="8dp"
+    android:elevation="1dp"
+    app:cardCornerRadius="4dp">
 
-    <RelativeLayout
-        android:id="@+id/device_item_parent"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical">
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/device_name"
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:orientation="horizontal">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:cardCornerRadius="20dp">
+
+                <ImageView
+                    android:id="@+id/device_icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/device_icon"
+                    android:scaleType="centerCrop"
+                    android:src="@color/colorAccent" />
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/device_"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="8dp"
+                android:gravity="center_vertical"
+                android:text="@string/device"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:textColor="@color/headLinesColor"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/description_digital_device"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/device_description"
+            android:textAlignment="center"
+            android:textAppearance="?attr/textAppearanceBody2"
+            android:textColor="?android:attr/textColorSecondary"
+            android:textSize="12sp" />
+
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:maxLength="25"
-            android:text="@string/field_name"
-            android:textSize="24sp"
-            tools:ignore="RelativeOverlap" />
+            android:orientation="horizontal">
 
-        <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/switch_state"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_margin="20dp"
-            app:useMaterialThemeColors="true" />
-    </RelativeLayout>
+            <LinearLayout
+                android:id="@+id/control_container_device"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+
+            <ImageButton
+                android:id="@+id/more_btn_digital_device"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="12dp"
+                android:background="@color/background"
+                android:contentDescription="@string/more_actions"
+                android:src="@drawable/ic_baseline_more_vert_24" />
+
+        </RelativeLayout>
+    </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

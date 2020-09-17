@@ -19,6 +19,7 @@ public class Device {
 
     private Integer id;
     private String name;
+    private String description;
     private boolean reverse;
     @SerializedName(value = "creation_date")
     private LocalDateTime creationDate;

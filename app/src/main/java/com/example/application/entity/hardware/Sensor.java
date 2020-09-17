@@ -18,6 +18,7 @@ public class Sensor {
 
     private Integer id;
     private String name;
+    private String description;
     private Boolean reverse;
     @SerializedName(value = "creation_date")
     private LocalDateTime creationDate;

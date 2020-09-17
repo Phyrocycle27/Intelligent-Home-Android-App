@@ -1,11 +1,8 @@
 <resources>
     <string name="app_name">My Application</string>
     <string name="field_name">Device Name</string>
-    <string name="name">Name</string>
-    <string name="signal_type">Signal type</string>
-    <string name="gpio">GPIO</string>
-    <string name="inversion_of_signal">Inversion of signal</string>
-    <string name="add">создать</string>
-    <string name="device_list">Список устройств</string>
-    <string name="device_creation">Создание устройства</string>
+    <string name="device_icon">Device Icon</string>
+    <string name="device">Имя устройства</string>
+    <string name="device_description">Здесь должно находиться описание устройства</string>
+    <string name="more_actions">More actions</string>
 </resources>
