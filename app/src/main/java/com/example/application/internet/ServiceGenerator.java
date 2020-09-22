@@ -17,7 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ServiceGenerator {
 
-    private static String API_BASE_URL = "http://192.168.1.56:8080/";
+    private static final String API_BASE_URL = "http://192.168.1.56:8080/";
 
     private static final RxJava2CallAdapterFactory rxAdapter = RxJava2CallAdapterFactory
             .createWithScheduler(Schedulers.io());
@@ -37,7 +37,7 @@ public class ServiceGenerator {
     private static final HttpLoggingInterceptor logging = new HttpLoggingInterceptor()
             .setLevel(HttpLoggingInterceptor.Level.BODY);
 
-    private static Retrofit retrofit;
+    private static final Retrofit retrofit;
 
     static {
         httpClient.addInterceptor(logging)
