@@ -15,7 +15,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-public interface SensorsAPI {
+public interface SensorAPI {
 
     @GET("sensors/all")
     Observable<List<Sensor>> getAll();

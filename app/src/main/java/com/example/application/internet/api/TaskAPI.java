@@ -12,7 +12,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
-public interface TasksAPI {
+public interface TaskAPI {
 
     @GET("tasks/all")
     Observable<List<Task>> getAll();

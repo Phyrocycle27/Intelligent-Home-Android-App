@@ -15,7 +15,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-public interface DevicesAPI {
+public interface DeviceAPI {
 
     @GET("devices/all")
     Observable<List<Device>> getAll();

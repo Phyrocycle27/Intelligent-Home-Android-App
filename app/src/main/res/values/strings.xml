@@ -2,9 +2,9 @@
     <string name="app_name">My Application</string>
     <string name="field_name">Device Name</string>
     <string name="device_icon">Device Icon</string>
-    <string name="device">Имя устройства</string>
-    <string name="device_description">Здесь должно находиться описание устройства</string>
     <string name="more_actions">More actions</string>
+    <string name="device_name">Имя устройства</string>
+    <string name="device_description">Здесь должно находиться описание устройства</string>
     <string name="area">Имя зоны</string>
     <string name="area_description">Здесь должно находиться описание зоны</string>
 </resources>
