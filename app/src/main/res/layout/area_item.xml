@@ -42,7 +42,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="8dp"
                 android:gravity="center_vertical"
-                android:text="@string/area"
+                android:text="@string/area_name"
                 android:textAppearance="?attr/textAppearanceHeadline6"
                 android:textColor="@color/headLinesColor"
                 android:textSize="16sp" />

@@ -5,6 +5,8 @@
     <string name="more_actions">More actions</string>
     <string name="device_name">Имя устройства</string>
     <string name="device_description">Здесь должно находиться описание устройства</string>
-    <string name="area">Имя зоны</string>
-    <string name="area_description">Здесь должно находиться описание зоны</string>
+    <string name="area_name">Имя зоны</string>
+    <string name="area_description">Описание зоны</string>
+    <string name="area_addition">Area addition</string>
+    <string name="create">Создать</string>
 </resources>

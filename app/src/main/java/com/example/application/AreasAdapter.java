@@ -17,8 +17,8 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class AreasAdapter extends RecyclerView.Adapter<AreaViewHolder> {
 
-    private Context context;
-    private List<Area> areaList;
+    private final Context context;
+    private final List<Area> areaList;
 
     @NonNull
     @Override
@@ -32,6 +32,12 @@ public class AreasAdapter extends RecyclerView.Adapter<AreaViewHolder> {
     public void onBindViewHolder(@NonNull AreaViewHolder holder, int position) {
         holder.getName().setText(areaList.get(position).getName());
         holder.getDescription().setText(areaList.get(position).getDescription());
+
+        holder.itemView.setOnClickListener(v -> goToArea(areaList.get(position).getId()));
+    }
+
+    private void goToArea(int areaId) {
+        // при нажатии на cardView вызывается этот метод и передаётся Id
     }
 
     @Override
