@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
+@SuppressWarnings("CanBeFinal")
 @Getter
 @ToString
 @EqualsAndHashCode(callSuper = true)

@@ -17,7 +17,7 @@ public class AreaViewHolder extends RecyclerView.ViewHolder {
     public AreaViewHolder(@NonNull View itemView) {
         super(itemView);
 
-        name = itemView.findViewById(R.id.area_name);
-        description = itemView.findViewById(R.id.area_description);
+        name = itemView.findViewById(R.id.text_area_name);
+        description = itemView.findViewById(R.id.text_area_description);
     }
 }

@@ -4,6 +4,7 @@ import com.example.application.entity.task.processing.ProcessingAction;
 
 import lombok.Getter;
 
+@SuppressWarnings("CanBeFinal")
 @Getter
 public class SetPwmSignalObject extends ProcessingObject {
 

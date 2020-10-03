@@ -15,7 +15,7 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class AreasAdapter extends RecyclerView.Adapter<AreaViewHolder> {
+public class AreaAdapter extends RecyclerView.Adapter<AreaViewHolder> {
 
     private final Context context;
     private final List<Area> areaList;
@@ -24,7 +24,7 @@ public class AreasAdapter extends RecyclerView.Adapter<AreaViewHolder> {
     @Override
     public AreaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.area_item, parent, false);
+                .inflate(R.layout.item_area, parent, false);
         return new AreaViewHolder(view);
     }
 

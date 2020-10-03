@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:id="@+id/main_content"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -10,7 +11,7 @@
         android:orientation="vertical">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/field_area_name"
+            android:id="@+id/text_input_layout_area_name"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -19,7 +20,8 @@
             app:counterEnabled="true"
             app:counterMaxLength="25"
             app:endIconMode="clear_text"
-            app:helperText="Введите название зоны">
+            app:errorEnabled="true"
+            app:helperText="Введите имя зоны">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -28,7 +30,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/field_area_description"
+            android:id="@+id/text_input_layout_area_description"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -37,6 +39,7 @@
             app:counterEnabled="true"
             app:counterMaxLength="50"
             app:endIconMode="clear_text"
+            app:errorEnabled="true"
             app:helperText="Введите описание зоны">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -48,7 +51,7 @@
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/extended_fab"
+        android:id="@+id/fab_extended_area_create"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
@@ -58,4 +61,4 @@
         app:icon="@drawable/ic_baseline_add_24"
         app:layout_constraintBottom_toBottomOf="parent" />
 
-</FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
