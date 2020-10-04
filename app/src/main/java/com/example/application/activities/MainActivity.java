@@ -3,13 +3,14 @@ package com.example.application.activities;
 import android.os.Bundle;
 import android.util.Log;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 
 import com.example.application.AreaListFragment;
 import com.example.application.R;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends FragmentActivity {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
     private AreaListFragment areaListFragment;
 
     @Override
@@ -18,20 +19,20 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.main_fragment_container, new AreaListFragment()).addToBackStack(null)
-                .commit();
-
-        Log.d("MAIN", getSupportFragmentManager().getFragments().toString());
+        if (getSupportFragmentManager().findFragmentById(R.id.main_fragment_container) == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.main_fragment_container, new AreaListFragment())
+                    .commit();
+            Log.d(TAG, "List fragment created");
+        }
     }
 
     @Override
     public void onBackPressed() {
         int count = getFragmentManager().getBackStackEntryCount();
-        Log.d("MAIN", "Curr is " + count);
+
         if (count == 0) {
             super.onBackPressed();
-//            additional code
         } else {
             getFragmentManager().popBackStack();
         }

@@ -20,11 +20,11 @@
             app:counterEnabled="true"
             app:counterMaxLength="25"
             app:endIconMode="clear_text"
-            app:errorEnabled="true"
-            app:helperText="Введите имя зоны">
+            app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
+                android:maxLength="25"
                 android:layout_height="wrap_content" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -39,11 +39,11 @@
             app:counterEnabled="true"
             app:counterMaxLength="50"
             app:endIconMode="clear_text"
-            app:errorEnabled="true"
-            app:helperText="Введите описание зоны">
+            app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
+                android:maxLength="50"
                 android:layout_height="wrap_content" />
 
         </com.google.android.material.textfield.TextInputLayout>

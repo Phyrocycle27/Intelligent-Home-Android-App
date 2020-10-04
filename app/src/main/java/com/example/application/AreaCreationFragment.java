@@ -25,6 +25,8 @@ import io.reactivex.schedulers.Schedulers;
 
 public class AreaCreationFragment extends Fragment implements View.OnClickListener {
 
+    private static final String TAG = AreaCreationFragment.class.getSimpleName();
+
     private CompositeDisposable compositeDisposable;
     private AreaAPI api;
 
@@ -48,8 +50,6 @@ public class AreaCreationFragment extends Fragment implements View.OnClickListen
         View view = inflater.inflate(R.layout.fragment_area_creation, container, false);
 
         initFields(view);
-
-        Log.d("MAIN", requireActivity().getSupportFragmentManager().getFragments().toString());
 
         return view;
     }
@@ -93,5 +93,7 @@ public class AreaCreationFragment extends Fragment implements View.OnClickListen
     public void onDestroyView() {
         compositeDisposable.clear();
         super.onDestroyView();
+
+        Log.d(TAG, "Destroying fragment");
     }
 }
