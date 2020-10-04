@@ -18,7 +18,6 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         if (getSupportFragmentManager().findFragmentById(R.id.main_fragment_container) == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.main_fragment_container, new AreaListFragment())

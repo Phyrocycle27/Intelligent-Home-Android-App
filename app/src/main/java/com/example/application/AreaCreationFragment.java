@@ -67,8 +67,15 @@ public class AreaCreationFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onClick(View view) {
-        String name = Objects.requireNonNull(nameField.getEditText()).getText().toString().trim();
-        String description = Objects.requireNonNull(descriptionField.getEditText()).getText().toString().trim();
+        String name = Objects.requireNonNull(nameField.getEditText()).getText()
+                .toString()
+                .replace('\n', ' ')
+                .trim();
+
+        String description = Objects.requireNonNull(descriptionField.getEditText()).getText()
+                .toString()
+                .replace('\n', ' ')
+                .trim();
 
         if (name.length() < 3) {
             nameField.setError(getString(R.string.area_name_too_short));

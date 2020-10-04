@@ -85,6 +85,7 @@ public class AreaListFragment extends Fragment implements SwipeRefreshLayout.OnR
         mRecyclerView = view.findViewById(R.id.recycler_areas);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(getLayoutManager());
+        mRecyclerView.addOnScrollListener(new OnScrollListener());
 
         mSwipeRefreshLayout = view.findViewById(R.id.swipe_areas_list);
         mSwipeRefreshLayout.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.CYAN);
@@ -102,6 +103,39 @@ public class AreaListFragment extends Fragment implements SwipeRefreshLayout.OnR
         } else {
             return new LinearLayoutManager(requireContext());
         }
+    }
+
+    private class OnScrollListener extends RecyclerView.OnScrollListener {
+
+        @Override
+        public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+
+            if (dy > 0 && mFloatingActionButton.getVisibility() == View.VISIBLE) {
+                mFloatingActionButton.hide();
+            } else if (dy < 0 && mFloatingActionButton.getVisibility() != View.VISIBLE) {
+                mFloatingActionButton.show();
+            }
+        }
+    }
+
+    @Override
+    public void onRefresh() {
+        fetchData();
+    }
+
+    @Override
+    public void onClick(View view) {
+        FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+        transaction.addToBackStack(null);
+        transaction.setCustomAnimations(
+                R.anim.fragment_slide_in,  // enter
+                R.anim.fragment_fade_out,  // exit
+                R.anim.fragment_fade_in,   // popEnter
+                R.anim.fragment_slide_out  // popExit
+        );
+        transaction.replace(R.id.main_fragment_container, new AreaCreationFragment());
+        transaction.commit();
     }
 
     private void fetchData() {
@@ -126,24 +160,5 @@ public class AreaListFragment extends Fragment implements SwipeRefreshLayout.OnR
     public void onDestroy() {
         super.onDestroy();
         compositeDisposable.clear();
-    }
-
-    @Override
-    public void onRefresh() {
-        fetchData();
-    }
-
-    @Override
-    public void onClick(View view) {
-        FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-        transaction.addToBackStack(null);
-        transaction.setCustomAnimations(
-                R.anim.fragment_slide_in,  // enter
-                R.anim.fragment_fade_out,  // exit
-                R.anim.fragment_fade_in,   // popEnter
-                R.anim.fragment_slide_out  // popExit
-        );
-        transaction.replace(R.id.main_fragment_container, new AreaCreationFragment());
-        transaction.commit();
     }
 }
