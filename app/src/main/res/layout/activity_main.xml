@@ -4,8 +4,8 @@
     android:id="@+id/main_coordinator_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:background="#E5E5E5E5"
+    android:fitsSystemWindows="true"
     tools:context=".activities.MainActivity">
 
 
@@ -24,9 +24,9 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <FrameLayout
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:id="@+id/main_fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

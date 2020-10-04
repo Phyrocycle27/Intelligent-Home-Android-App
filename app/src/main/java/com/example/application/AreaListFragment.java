@@ -10,10 +10,10 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.transition.TransitionInflater;
 
 import com.example.application.entity.Area;
 import com.example.application.internet.ServiceGenerator;
@@ -42,6 +42,9 @@ public class AreaListFragment extends Fragment implements SwipeRefreshLayout.OnR
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_areas_list, container, false);
+
+        TransitionInflater transitionInflater = TransitionInflater.from(requireContext());
+        setEnterTransition(transitionInflater.inflateTransition(R.transition.fragment_slide_right));
 
         initFields(view);
         fetchData();
@@ -81,8 +84,13 @@ public class AreaListFragment extends Fragment implements SwipeRefreshLayout.OnR
         compositeDisposable.add(api.getAll()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::displayData, throwable ->
-                        Log.i(getTag(), Objects.requireNonNull(throwable.getMessage()))
+                .subscribe(areas -> {
+                            if (mSwipeRefreshLayout.isRefreshing()) {
+                                mSwipeRefreshLayout.setRefreshing(false);
+                            }
+                            displayData(areas);
+                        }, throwable ->
+                                Log.i(getTag(), Objects.requireNonNull(throwable.getMessage()))
                 ));
     }
 
@@ -99,10 +107,14 @@ public class AreaListFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     @Override
     public void onClick(View view) {
-        FragmentTransaction transaction = Objects.requireNonNull(getActivity())
-                .getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.main_fragment_container, new AreaCreationFragment());
-        transaction.addToBackStack(null);
-        transaction.commit();
+        requireActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_fragment_container, new AreaCreationFragment())
+                .setCustomAnimations(
+                        R.anim.fragment_fade_in,
+                        R.anim.fragment_slide_out,
+                        R.anim.fragment_fade_out,
+                        R.anim.fragment_slide_in)
+                .addToBackStack(null)
+                .commit();
     }
 }

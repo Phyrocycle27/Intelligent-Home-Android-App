@@ -1,6 +1,7 @@
 package com.example.application;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,14 +9,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.application.entity.Area;
 import com.example.application.internet.ServiceGenerator;
 import com.example.application.internet.api.AreaAPI;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Objects;
@@ -36,15 +34,12 @@ public class AreaCreationFragment extends Fragment implements View.OnClickListen
     private ExtendedFloatingActionButton createBtn;
 
     private Consumer<Area> successSnackbar = areas -> {
-        FragmentTransaction transaction = Objects.requireNonNull(getActivity())
-                .getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.main_fragment_container, new AreaListFragment());
-        transaction.addToBackStack(null);
-        transaction.commit();
+        requireActivity().onBackPressed();
 
-        Snackbar.make(Objects.requireNonNull(
-                getActivity()).findViewById(R.id.main_coordinator_container),
-                R.string.area_created, Snackbar.LENGTH_LONG).show();
+        //TODO: Snackbar об успешном создани зоны при возвращении к списку
+        /*Snackbar.make(Objects.requireNonNull(
+                getActivity().getSupportFragmentManager()).findViewById(R.id.main_coordinator_container),
+                R.string.area_created, Snackbar.LENGTH_LONG).show();*/
     };
 
     @Nullable
@@ -53,6 +48,8 @@ public class AreaCreationFragment extends Fragment implements View.OnClickListen
         View view = inflater.inflate(R.layout.fragment_area_creation, container, false);
 
         initFields(view);
+
+        Log.d("MAIN", requireActivity().getSupportFragmentManager().getFragments().toString());
 
         return view;
     }
@@ -82,6 +79,7 @@ public class AreaCreationFragment extends Fragment implements View.OnClickListen
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(successSnackbar));
+            //TODO: Обработчик на ошибку
         }
     }
 
