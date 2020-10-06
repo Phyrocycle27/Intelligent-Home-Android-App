@@ -11,4 +11,7 @@
     <string name="create">Создать</string>
     <string name="area_name_too_short">Имя должно состоять минимум из 3-х символов</string>
     <string name="area_created">Зона создана</string>
+    <string name="information">Информация</string>
+    <string name="edit">Редактировать</string>
+    <string name="delete">Удалить</string>
 </resources>

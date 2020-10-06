@@ -105,6 +105,7 @@ public class AreaListFragment extends Fragment implements SwipeRefreshLayout.OnR
         }
     }
 
+
     private class OnScrollListener extends RecyclerView.OnScrollListener {
 
         @Override
@@ -134,6 +135,7 @@ public class AreaListFragment extends Fragment implements SwipeRefreshLayout.OnR
                 R.anim.fragment_fade_in,   // popEnter
                 R.anim.fragment_slide_out  // popExit
         );
+
         transaction.replace(R.id.main_fragment_container, new AreaCreationFragment());
         transaction.commit();
     }
@@ -147,6 +149,7 @@ public class AreaListFragment extends Fragment implements SwipeRefreshLayout.OnR
                         Log.i(getTag(), Objects.requireNonNull(throwable.getMessage()))
                 ));
     }
+
 
     private void displayData(List<Area> areas) {
         if (mSwipeRefreshLayout.isRefreshing()) {

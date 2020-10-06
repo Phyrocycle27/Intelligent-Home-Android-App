@@ -73,7 +73,7 @@
                 android:layout_alignParentEnd="true"
                 android:background="@color/background"
                 android:contentDescription="@string/more_actions"
-                android:src="@drawable/ic_baseline_more_vert_24" />
+                android:src="@drawable/ic_more_vert_24" />
 
 
         </RelativeLayout>

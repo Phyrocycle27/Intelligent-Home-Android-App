@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/info_area"
+        android:icon="@drawable/ic_info_24"
+        android:title="@string/information"
+        app:showAsAction="ifRoom|withText" />
+    <item
+        android:id="@+id/edit_area"
+        android:icon="@drawable/ic_edit_24"
+        android:title="@string/edit"
+        app:showAsAction="ifRoom|withText" />
+    <item
+        android:id="@+id/delete_area"
+        android:icon="@drawable/ic_delete_24"
+        android:title="@string/delete"
+        app:showAsAction="ifRoom|withText" />
+</menu>
