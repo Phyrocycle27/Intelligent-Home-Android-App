@@ -31,8 +31,7 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull AreaViewHolder holder, int position) {
-        holder.getName().setText(areaList.get(position).getName());
-        holder.getDescription().setText(areaList.get(position).getDescription());
+        holder.bind(areaList.get(position));
     }
 
     private void goToArea(int areaId) {
