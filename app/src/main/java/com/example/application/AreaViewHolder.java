@@ -1,7 +1,6 @@
 package com.example.application;
 
 import android.util.Log;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -11,11 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.application.entity.Area;
-import com.example.application.internet.ServiceGenerator;
-import com.example.application.internet.api.AreaAPI;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.snackbar.Snackbar;
+import com.example.application.models.Area;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -27,15 +22,17 @@ import lombok.Getter;
 public class AreaViewHolder extends RecyclerView.ViewHolder implements PopupMenu.OnMenuItemClickListener {
 
     private static final String TAG = AreaViewHolder.class.getSimpleName();
-    private final AreaAPI api = ServiceGenerator.createService(AreaAPI.class);
 
-    private final TextView name;
-    private final TextView description;
-    private final ImageButton moreBtn;
+    private final AreaAdapter parent;
 
-    public AreaViewHolder(@NonNull View itemView) {
+    private TextView name;
+    private TextView description;
+    private ImageButton moreBtn;
+
+    public AreaViewHolder(@NonNull View itemView, AreaAdapter parent) {
         super(itemView);
 
+        this.parent = parent;
         name = itemView.findViewById(R.id.text_area_name);
         description = itemView.findViewById(R.id.text_area_description);
         moreBtn = itemView.findViewById(R.id.image_btn_more_area);
@@ -49,8 +46,7 @@ public class AreaViewHolder extends RecyclerView.ViewHolder implements PopupMenu
 
     public void onMoreBtnClick(View view) {
         PopupMenu popup = new PopupMenu(view.getContext(), view);
-        MenuInflater inflater = popup.getMenuInflater();
-        inflater.inflate(R.menu.cardview_actions, popup.getMenu());
+        popup.getMenuInflater().inflate(R.menu.cardview_actions, popup.getMenu());
         popup.setOnMenuItemClickListener(this);
         setIcons(popup);
         popup.show();
@@ -81,7 +77,7 @@ public class AreaViewHolder extends RecyclerView.ViewHolder implements PopupMenu
                 return true;
             case R.id.delete:
                 Log.d(TAG, "delete btn pressed");
-                createDialog();
+                deleteArea();
                 return true;
             case R.id.edit:
                 Log.d(TAG, "edit btn pressed");
@@ -91,26 +87,7 @@ public class AreaViewHolder extends RecyclerView.ViewHolder implements PopupMenu
         }
     }
 
-    private void createDialog() {
-        new MaterialAlertDialogBuilder(itemView.getContext())
-                .setTitle(R.string.dialog_title_remove_confirm)
-                .setMessage(R.string.dialog_message_area_remove_confirm)
-                .setNeutralButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
-                .setPositiveButton(R.string.agree, (dialog, which) -> {
-                    dialog.dismiss();
-                    deleteArea();
-                })
-                .show();
-    }
-
     private void deleteArea() {
-    }
-
-    private void showSuccessfulDeletionSnackbar() {
-        Snackbar.make(itemView.getRootView()
-                        .findViewById(R.id.coordinator_areas_list),
-                R.string.area_successful_deleted,
-                Snackbar.LENGTH_SHORT)
-                .show();
+        parent.deleteArea(this);
     }
 }

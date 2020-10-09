@@ -1,7 +1,7 @@
 package com.example.application.internet.api;
 
-import com.example.application.entity.hardware.Device;
-import com.example.application.entity.signal.SignalType;
+import com.example.application.models.hardware.Device;
+import com.example.application.models.signal.SignalType;
 
 import java.util.List;
 

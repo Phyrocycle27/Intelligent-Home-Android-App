@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -17,10 +18,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.application.entity.Area;
 import com.example.application.internet.ServiceGenerator;
 import com.example.application.internet.api.AreaAPI;
+import com.example.application.models.Area;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 import java.util.Objects;
@@ -42,11 +45,11 @@ public class AreaListFragment extends Fragment implements SwipeRefreshLayout.OnR
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private FloatingActionButton mFloatingActionButton;
     private RecyclerView mRecyclerView;
+    private CoordinatorLayout container;
 
     private AreaAdapter adapter;
 
     private boolean dataFetchedFlag = false;
-    private boolean initUIFlag = false;
 
     @Nullable
     @Override
@@ -54,10 +57,7 @@ public class AreaListFragment extends Fragment implements SwipeRefreshLayout.OnR
         View view = inflater.inflate(R.layout.fragment_areas_list, container, false);
 
         initUI(view);
-
-        if (!dataFetchedFlag) {
-            fetchData();
-        }
+        fetchData();
 
         return view;
     }
@@ -76,26 +76,38 @@ public class AreaListFragment extends Fragment implements SwipeRefreshLayout.OnR
         compositeDisposable = new CompositeDisposable();
         api = ServiceGenerator.createService(AreaAPI.class);
 
-        adapter = new AreaAdapter(requireContext());
+        adapter = new AreaAdapter(requireContext(), this);
     }
 
     private void initUI(View view) {
         Log.d(TAG, "UI init");
 
+        initRecyclerView(view);
+        initSwipeRefreshLayout(view);
+        initFAB(view);
+
+        container = view.findViewById(R.id.coordinator_areas_list);
+    }
+
+    private void initRecyclerView(View view) {
         mRecyclerView = view.findViewById(R.id.recycler_areas);
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(getLayoutManager());
-        mRecyclerView.addOnScrollListener(new OnScrollListener());
+        mRecyclerView.setLayoutManager(getLayoutManagerForRV());
+        mRecyclerView.addOnScrollListener(new OnScrollRecyclerViewListener());
+    }
 
+    private void initSwipeRefreshLayout(View view) {
         mSwipeRefreshLayout = view.findViewById(R.id.swipe_areas_list);
         mSwipeRefreshLayout.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.CYAN);
         mSwipeRefreshLayout.setOnRefreshListener(this);
+    }
 
+    private void initFAB(View view) {
         mFloatingActionButton = view.findViewById(R.id.fab_area_create);
         mFloatingActionButton.setOnClickListener(this);
     }
 
-    private RecyclerView.LayoutManager getLayoutManager() {
+    private RecyclerView.LayoutManager getLayoutManagerForRV() {
         int orientation = requireActivity().getResources().getConfiguration().orientation;
 
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -106,7 +118,7 @@ public class AreaListFragment extends Fragment implements SwipeRefreshLayout.OnR
     }
 
 
-    private class OnScrollListener extends RecyclerView.OnScrollListener {
+    private class OnScrollRecyclerViewListener extends RecyclerView.OnScrollListener {
 
         @Override
         public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
@@ -150,11 +162,45 @@ public class AreaListFragment extends Fragment implements SwipeRefreshLayout.OnR
                 ));
     }
 
+    public void deleteArea(Integer id) {
+        confirmDeleteAreaDialog(id);
+    }
+
+    private void confirmDeleteAreaDialog(Integer areaId) {
+        new MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.dialog_title_remove_confirm)
+                .setMessage(R.string.dialog_message_area_remove_confirm)
+                .setNeutralButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
+                .setPositiveButton(R.string.agree, (dialog, which) -> {
+                    deleteAreaRequest(areaId);
+                    dialog.dismiss();
+                })
+                .show();
+    }
+
+    private void deleteAreaRequest(Integer areaId) {
+        compositeDisposable.add(api.delete(areaId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(voidResponse -> {
+                            Snackbar.make(container, R.string.area_successful_deleted,
+                                    Snackbar.LENGTH_SHORT)
+                                    .show();
+                            fetchData();
+                        }, throwable -> {
+                            Snackbar.make(container, R.string.area_error_deleted,
+                                    Snackbar.LENGTH_SHORT)
+                                    .show();
+                            Log.i(getTag(), Objects.requireNonNull(throwable.getMessage()));
+                        }
+                ));
+    }
 
     private void displayData(List<Area> areas) {
         if (mSwipeRefreshLayout.isRefreshing()) {
             mSwipeRefreshLayout.setRefreshing(false);
         }
+
         adapter.updateData(areas);
         dataFetchedFlag = true;
     }

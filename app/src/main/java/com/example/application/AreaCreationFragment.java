@@ -10,9 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.application.entity.Area;
 import com.example.application.internet.ServiceGenerator;
 import com.example.application.internet.api.AreaAPI;
+import com.example.application.models.Area;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 

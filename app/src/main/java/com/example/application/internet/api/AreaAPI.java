@@ -1,6 +1,6 @@
 package com.example.application.internet.api;
 
-import com.example.application.entity.Area;
+import com.example.application.models.Area;
 
 import java.util.List;
 

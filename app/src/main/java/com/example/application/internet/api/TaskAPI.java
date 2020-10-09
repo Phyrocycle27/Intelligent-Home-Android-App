@@ -1,6 +1,6 @@
 package com.example.application.internet.api;
 
-import com.example.application.entity.task.Task;
+import com.example.application.models.task.Task;
 
 import java.util.List;
 

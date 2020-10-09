@@ -1,6 +1,6 @@
 package com.example.application.internet.api;
 
-import com.example.application.entity.signal.DigitalState;
+import com.example.application.models.signal.DigitalState;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;

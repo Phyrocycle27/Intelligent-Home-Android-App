@@ -1,7 +1,7 @@
 package com.example.application.internet.api;
 
-import com.example.application.entity.hardware.AvailableGpioPins;
-import com.example.application.entity.signal.SignalType;
+import com.example.application.models.hardware.AvailableGpioPins;
+import com.example.application.models.signal.SignalType;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;

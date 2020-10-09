@@ -1,6 +1,6 @@
-package com.example.application.entity.task.processing.objects;
+package com.example.application.models.task.processing.objects;
 
-import com.example.application.entity.task.processing.ProcessingAction;
+import com.example.application.models.task.processing.ProcessingAction;
 
 import lombok.Getter;
 
