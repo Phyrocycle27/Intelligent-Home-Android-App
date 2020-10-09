@@ -8,12 +8,14 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 
 import com.example.application.internet.ServiceGenerator;
 import com.example.application.internet.api.AreaAPI;
 import com.example.application.models.Area;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Objects;
@@ -23,6 +25,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
+@SuppressWarnings("FieldCanBeLocal")
 public class AreaCreationFragment extends Fragment implements View.OnClickListener {
 
     private static final String TAG = AreaCreationFragment.class.getSimpleName();
@@ -32,16 +35,15 @@ public class AreaCreationFragment extends Fragment implements View.OnClickListen
 
     private TextInputLayout nameField;
     private TextInputLayout descriptionField;
-    @SuppressWarnings("FieldCanBeLocal")
     private ExtendedFloatingActionButton createBtn;
+    private CoordinatorLayout container;
 
-    private Consumer<Area> successSnackbar = areas -> {
+    private Consumer<Area> goToAreasList = areas -> {
         requireActivity().onBackPressed();
 
-        //TODO: Snackbar об успешном создани зоны при возвращении к списку
-        /*Snackbar.make(Objects.requireNonNull(
-                getActivity().getSupportFragmentManager()).findViewById(R.id.main_coordinator_container),
-                R.string.area_created, Snackbar.LENGTH_LONG).show();*/
+        Bundle result = new Bundle();
+        result.putString("bundleKey", AreaCreationStatus.SUCCESS.toString());
+        getParentFragmentManager().setFragmentResult("requestKey", result);
     };
 
     @Nullable
@@ -63,6 +65,8 @@ public class AreaCreationFragment extends Fragment implements View.OnClickListen
 
         createBtn = view.findViewById(R.id.fab_extended_area_create);
         createBtn.setOnClickListener(this);
+
+        container = view.findViewById(R.id.coordinator_area_creation);
     }
 
     @Override
@@ -80,14 +84,21 @@ public class AreaCreationFragment extends Fragment implements View.OnClickListen
         if (name.length() < 3) {
             nameField.setError(getString(R.string.area_name_too_short));
         } else {
-            Area area = new Area(0, name, description);
-
-            compositeDisposable.add(api.create(area)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(successSnackbar));
-            //TODO: Обработчик на ошибку
+            Area newArea = new Area(0, name, description);
+            createAreaRequest(newArea);
         }
+    }
+
+    private void createAreaRequest(Area newArea) {
+        compositeDisposable.add(api.create(newArea)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(goToAreasList, throwable -> {
+                    Snackbar.make(container, R.string.error_creating_area, Snackbar.LENGTH_INDEFINITE)
+                            .setAction(R.string.retry, v -> createAreaRequest(newArea))
+                            .show();
+                    Log.d(TAG, Objects.requireNonNull(throwable.getMessage()));
+                }));
     }
 
     @Override
@@ -98,9 +109,9 @@ public class AreaCreationFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onDestroyView() {
+        Log.d(TAG, "Destroying fragment");
+
         compositeDisposable.clear();
         super.onDestroyView();
-
-        Log.d(TAG, "Destroying fragment");
     }
 }

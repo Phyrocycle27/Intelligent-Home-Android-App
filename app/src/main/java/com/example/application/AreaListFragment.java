@@ -49,7 +49,7 @@ public class AreaListFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     private AreaAdapter adapter;
 
-    private boolean dataFetchedFlag = false;
+    private boolean dataFetched = false;
 
     @Nullable
     @Override
@@ -57,7 +57,10 @@ public class AreaListFragment extends Fragment implements SwipeRefreshLayout.OnR
         View view = inflater.inflate(R.layout.fragment_areas_list, container, false);
 
         initUI(view);
-        fetchData();
+
+        if (!dataFetched) {
+            fetchData();
+        }
 
         return view;
     }
@@ -77,6 +80,18 @@ public class AreaListFragment extends Fragment implements SwipeRefreshLayout.OnR
         api = ServiceGenerator.createService(AreaAPI.class);
 
         adapter = new AreaAdapter(requireContext(), this);
+
+        getParentFragmentManager().setFragmentResultListener("requestKey", this, (key, bundle) -> {
+            AreaCreationStatus status = AreaCreationStatus.valueOf(bundle.getString("bundleKey"));
+            //noinspection SwitchStatementWithTooFewBranches
+            switch (status) {
+                case SUCCESS:
+                    Snackbar.make(container, R.string.area_successful_created, Snackbar.LENGTH_SHORT)
+                            .show();
+                    fetchData();
+                    break;
+            }
+        });
     }
 
     private void initUI(View view) {
@@ -129,6 +144,14 @@ public class AreaListFragment extends Fragment implements SwipeRefreshLayout.OnR
             } else if (dy < 0 && mFloatingActionButton.getVisibility() != View.VISIBLE) {
                 mFloatingActionButton.show();
             }
+            Log.d(TAG, "Scrolled");
+        }
+
+        @Override
+        public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+
+            Log.d(TAG, "Scroll state changed new state is" + newState);
         }
     }
 
@@ -142,10 +165,10 @@ public class AreaListFragment extends Fragment implements SwipeRefreshLayout.OnR
         FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
         transaction.addToBackStack(null);
         transaction.setCustomAnimations(
-                R.anim.fragment_slide_in,  // enter
-                R.anim.fragment_fade_out,  // exit
-                R.anim.fragment_fade_in,   // popEnter
-                R.anim.fragment_slide_out  // popExit
+                R.anim.enter_from_right,
+                R.anim.exit_to_left,
+                R.anim.enter_from_left,
+                R.anim.exit_to_right
         );
 
         transaction.replace(R.id.main_fragment_container, new AreaCreationFragment());
@@ -153,12 +176,20 @@ public class AreaListFragment extends Fragment implements SwipeRefreshLayout.OnR
     }
 
     private void fetchData() {
-        Log.d(TAG, "fetch data");
         compositeDisposable.add(api.getAll()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::displayData, throwable ->
-                        Log.i(getTag(), Objects.requireNonNull(throwable.getMessage()))
+                .subscribe(this::displayData, throwable -> {
+                            if (mSwipeRefreshLayout.isRefreshing()) {
+                                mSwipeRefreshLayout.setRefreshing(false);
+                            }
+                            Snackbar.make(container, R.string.error_downloading_data,
+                                    Snackbar.LENGTH_INDEFINITE)
+                                    .setAction(R.string.retry, v -> fetchData())
+                                    .show();
+
+                            Log.d(TAG, Objects.requireNonNull(throwable.getMessage()));
+                        }
                 ));
     }
 
@@ -188,10 +219,11 @@ public class AreaListFragment extends Fragment implements SwipeRefreshLayout.OnR
                                     .show();
                             fetchData();
                         }, throwable -> {
-                            Snackbar.make(container, R.string.area_error_deleted,
-                                    Snackbar.LENGTH_SHORT)
-                                    .show();
-                            Log.i(getTag(), Objects.requireNonNull(throwable.getMessage()));
+                    Snackbar.make(container, R.string.area_error_deleted,
+                            Snackbar.LENGTH_INDEFINITE)
+                            .setAction(R.string.retry, v -> deleteAreaRequest(areaId))
+                            .show();
+                    Log.d(TAG, Objects.requireNonNull(throwable.getMessage()));
                         }
                 ));
     }
@@ -202,7 +234,7 @@ public class AreaListFragment extends Fragment implements SwipeRefreshLayout.OnR
         }
 
         adapter.updateData(areas);
-        dataFetchedFlag = true;
+        dataFetched = true;
     }
 
     @Override
