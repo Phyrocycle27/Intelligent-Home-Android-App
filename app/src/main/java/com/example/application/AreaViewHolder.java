@@ -39,7 +39,7 @@ public class AreaViewHolder extends RecyclerView.ViewHolder implements PopupMenu
     }
 
     public void bind(Area area) {
-        name.setText(area.getDescription());
+        name.setText(area.getName());
         description.setText(area.getDescription());
         moreBtn.setOnClickListener(this::onMoreBtnClick);
     }

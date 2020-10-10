@@ -14,12 +14,12 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/appbar_main"
-            style="@style/Widget.MaterialComponents.Toolbar.Primary"
+            android:id="@+id/toolbar_main"
+            style="@style/Widget.MaterialComponents.Toolbar.PrimarySurface"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:navigationIcon="@drawable/ic_menu_24"
-            app:title="Дом" />
+            android:layout_height="?attr/actionBarSize">
+
+        </com.google.android.material.appbar.MaterialToolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 

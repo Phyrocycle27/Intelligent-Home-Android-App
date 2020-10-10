@@ -26,6 +26,8 @@
     <string name="error_downloading_data">Произошла ошибка при загрузке данных</string>
     <string name="error_creating_area">Произошла ошибка при создании зоны</string>
     <string name="area_successful_created">Зона успешно создана</string>
+    <string name="home">Дом</string>
+    <string name="area_creaion">Создание зоны</string>
 
 
 </resources>
