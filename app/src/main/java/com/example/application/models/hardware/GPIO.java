@@ -1,6 +1,6 @@
-package com.example.application.entity.hardware;
+package com.example.application.models.hardware;
 
-import com.example.application.entity.signal.SignalType;
+import com.example.application.models.signal.SignalType;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

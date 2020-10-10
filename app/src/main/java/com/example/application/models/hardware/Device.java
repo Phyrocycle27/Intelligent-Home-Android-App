@@ -1,4 +1,4 @@
-package com.example.application.entity.hardware;
+package com.example.application.models.hardware;
 
 
 import com.google.gson.annotations.SerializedName;

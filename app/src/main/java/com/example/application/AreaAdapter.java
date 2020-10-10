@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.application.entity.Area;
+import com.example.application.models.Area;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +19,7 @@ import lombok.AllArgsConstructor;
 public class AreaAdapter extends RecyclerView.Adapter<AreaViewHolder> {
 
     private final Context context;
+    private final AreaListFragment parent;
     private final List<Area> areaList = new ArrayList<>();
 
     @NonNull
@@ -26,13 +27,12 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaViewHolder> {
     public AreaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_area, parent, false);
-        return new AreaViewHolder(view);
+        return new AreaViewHolder(view, this);
     }
 
     @Override
     public void onBindViewHolder(@NonNull AreaViewHolder holder, int position) {
-        holder.getName().setText(areaList.get(position).getName());
-        holder.getDescription().setText(areaList.get(position).getDescription());
+        holder.bind(areaList.get(position));
     }
 
     private void goToArea(int areaId) {
@@ -50,5 +50,9 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaViewHolder> {
             areaList.addAll(newList);
             notifyDataSetChanged();
         }
+    }
+
+    public void deleteArea(AreaViewHolder itemView) {
+        parent.deleteArea(areaList.get(itemView.getLayoutPosition()).getId());
     }
 }

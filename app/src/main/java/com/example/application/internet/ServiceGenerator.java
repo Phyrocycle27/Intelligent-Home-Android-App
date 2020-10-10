@@ -1,9 +1,9 @@
 package com.example.application.internet;
 
-import com.example.application.entity.task.processing.objects.ProcessingObject;
-import com.example.application.entity.task.trigger.objects.TriggerObject;
 import com.example.application.internet.deserializer.ProcessingObjectTypeAdapter;
 import com.example.application.internet.deserializer.TriggerObjectTypeAdapter;
+import com.example.application.models.task.processing.objects.ProcessingObject;
+import com.example.application.models.task.trigger.objects.TriggerObject;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 

@@ -1,4 +1,4 @@
-package com.example.application.entity.signal;
+package com.example.application.models.signal;
 
 public enum SignalType {
     DIGITAL,

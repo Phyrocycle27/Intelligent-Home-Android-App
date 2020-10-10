@@ -1,10 +1,10 @@
 package com.example.application.internet.deserializer;
 
-import com.example.application.entity.task.processing.ProcessingAction;
-import com.example.application.entity.task.processing.objects.ProcessingObject;
-import com.example.application.entity.task.processing.objects.SetDigitalSignalObject;
-import com.example.application.entity.task.processing.objects.SetPwmSignalObject;
 import com.example.application.exception.UnsupportedProcessingObjectTypeException;
+import com.example.application.models.task.processing.ProcessingAction;
+import com.example.application.models.task.processing.objects.ProcessingObject;
+import com.example.application.models.task.processing.objects.SetDigitalSignalObject;
+import com.example.application.models.task.processing.objects.SetPwmSignalObject;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;

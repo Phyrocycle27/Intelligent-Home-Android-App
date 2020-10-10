@@ -14,4 +14,20 @@
     <string name="information">Информация</string>
     <string name="edit">Редактировать</string>
     <string name="delete">Удалить</string>
+    <string name="cancel">Отмена</string>
+    <string name="agree">Подтвердить</string>
+    <string name="retry">Повторить</string>
+
+    <!-- Dialogs -->
+    <string name="dialog_title_remove_confirm">Подтвердите удаление</string>
+    <string name="dialog_message_area_remove_confirm">Вы действительно хотите удалить эту зону?</string>
+    <string name="area_successful_deleted">Зона успешно удалена</string>
+    <string name="area_error_deleted">Произошла ошибка при удалении зоны</string>
+    <string name="error_downloading_data">Произошла ошибка при загрузке данных</string>
+    <string name="error_creating_area">Произошла ошибка при создании зоны</string>
+    <string name="area_successful_created">Зона успешно создана</string>
+    <string name="home">Дом</string>
+    <string name="area_creaion">Создание зоны</string>
+
+
 </resources>

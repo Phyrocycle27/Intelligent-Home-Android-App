@@ -1,4 +1,4 @@
-package com.example.application.entity.task.trigger;
+package com.example.application.models.task.trigger;
 
 import com.example.application.exception.InvalidTriggerObjectTypeException;
 

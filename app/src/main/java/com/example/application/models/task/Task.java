@@ -1,7 +1,7 @@
-package com.example.application.entity.task;
+package com.example.application.models.task;
 
-import com.example.application.entity.task.processing.objects.ProcessingObject;
-import com.example.application.entity.task.trigger.objects.TriggerObject;
+import com.example.application.models.task.processing.objects.ProcessingObject;
+import com.example.application.models.task.trigger.objects.TriggerObject;
 
 import java.util.HashSet;
 import java.util.Set;

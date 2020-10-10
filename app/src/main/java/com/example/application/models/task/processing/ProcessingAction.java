@@ -1,4 +1,4 @@
-package com.example.application.entity.task.processing;
+package com.example.application.models.task.processing;
 
 import com.example.application.exception.InvalidProcessingObjectTypeException;
 

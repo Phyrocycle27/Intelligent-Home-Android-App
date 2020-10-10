@@ -1,7 +1,6 @@
 package com.example.application.activities;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.fragment.app.FragmentActivity;
 
@@ -11,7 +10,6 @@ import com.example.application.R;
 public class MainActivity extends FragmentActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    private AreaListFragment areaListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +20,6 @@ public class MainActivity extends FragmentActivity {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.main_fragment_container, new AreaListFragment())
                     .commit();
-            Log.d(TAG, "List fragment created");
         }
     }
 

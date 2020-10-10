@@ -1,9 +1,9 @@
 package com.example.application.internet.deserializer;
 
-import com.example.application.entity.task.trigger.TriggerAction;
-import com.example.application.entity.task.trigger.objects.ChangeDigitalSignalObject;
-import com.example.application.entity.task.trigger.objects.TriggerObject;
 import com.example.application.exception.UnsupportedTriggerObjectTypeException;
+import com.example.application.models.task.trigger.TriggerAction;
+import com.example.application.models.task.trigger.objects.ChangeDigitalSignalObject;
+import com.example.application.models.task.trigger.objects.TriggerObject;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;

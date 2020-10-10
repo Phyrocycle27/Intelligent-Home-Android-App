@@ -1,4 +1,4 @@
-package com.example.application.entity.task.trigger.objects;
+package com.example.application.models.task.trigger.objects;
 
 public class ChangeDigitalSignalObject extends TriggerObject {
 
