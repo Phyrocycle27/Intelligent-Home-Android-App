@@ -1,6 +1,6 @@
 package com.example.application;
 
-public enum AreaCreationStatus {
+public enum CreationStatus {
     SUCCESS,
     NO_INTERNET
 }

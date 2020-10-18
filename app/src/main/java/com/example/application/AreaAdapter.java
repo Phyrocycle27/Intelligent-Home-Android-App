@@ -33,10 +33,11 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull AreaViewHolder holder, int position) {
         holder.bind(areaList.get(position));
+        holder.itemView.setOnClickListener(v -> goToArea(areaList.get(position).getId()));
     }
 
     private void goToArea(int areaId) {
-        // при нажатии на cardView вызывается этот метод и передаётся Id
+        parent.goToArea(areaId);
     }
 
     @Override

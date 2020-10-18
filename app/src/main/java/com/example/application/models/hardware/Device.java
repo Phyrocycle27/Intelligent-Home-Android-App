@@ -3,7 +3,7 @@ package com.example.application.models.hardware;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -22,6 +22,6 @@ public class Device {
     private int areaId;
     private boolean reverse;
     @SerializedName(value = "creation_date")
-    private LocalDateTime creationDate;
+    private Date creationDate;
     private GPIO gpio;
 }

@@ -12,15 +12,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.application.internet.ServiceGenerator;
-import com.example.application.internet.api.AreaAPI;
-import com.example.application.models.Area;
+import com.example.application.internet.api.DeviceAPI;
+import com.example.application.models.hardware.Device;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -33,15 +32,13 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
-//TODO: Если список не пустой, то регистрируем данные в Recycler иначе
-// выводим кнопку "+ Создать" в центре экрана
 @SuppressWarnings("FieldCanBeLocal")
-public class AreaListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
+public class DeviceListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
 
-    private static final String TAG = AreaListFragment.class.getSimpleName();
+    private static final String TAG = DeviceListFragment.class.getSimpleName();
 
     private CompositeDisposable compositeDisposable;
-    private AreaAPI api;
+    private DeviceAPI api;
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private FloatingActionButton mFloatingActionButton;
@@ -52,14 +49,20 @@ public class AreaListFragment extends Fragment implements SwipeRefreshLayout.OnR
     private final String KEY_RECYCLER_STATE = "RECYCLER_OFFSET";
     private static Bundle mBundleRecyclerViewState;
 
-    private AreaAdapter adapter;
+    private DeviceAdapter adapter;
 
+    private Integer areaId = -1;
     private boolean dataFetched = false;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_areas_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_device_list, container, false);
+
+        Bundle args = getArguments();
+        if (areaId == -1 && args != null) {
+            areaId = args.getInt("AREA_ID");
+        }
 
         initUI(view);
 
@@ -68,6 +71,17 @@ public class AreaListFragment extends Fragment implements SwipeRefreshLayout.OnR
         }
 
         return view;
+    }
+
+    private void initUI(View view) {
+        Log.d(TAG, "UI init");
+
+        initRecyclerView(view);
+        initSwipeRefreshLayout(view);
+        initFAB(view);
+        initToolbar();
+
+        container = view.findViewById(R.id.coordinator_devices_list);
     }
 
     @Override
@@ -88,16 +102,16 @@ public class AreaListFragment extends Fragment implements SwipeRefreshLayout.OnR
         setHasOptionsMenu(true);
 
         compositeDisposable = new CompositeDisposable();
-        api = ServiceGenerator.createService(AreaAPI.class);
+        api = ServiceGenerator.createService(DeviceAPI.class);
 
-        adapter = new AreaAdapter(requireContext(), this);
+        adapter = new DeviceAdapter(requireContext(), this);
 
         getParentFragmentManager().setFragmentResultListener("requestKey", this, (key, bundle) -> {
             CreationStatus status = CreationStatus.valueOf(bundle.getString("bundleKey"));
             //noinspection SwitchStatementWithTooFewBranches
             switch (status) {
                 case SUCCESS:
-                    Snackbar.make(container, R.string.area_successful_created, Snackbar.LENGTH_SHORT)
+                    Snackbar.make(container, R.string.device_successful_created, Snackbar.LENGTH_SHORT)
                             .show();
                     fetchData();
                     break;
@@ -105,41 +119,29 @@ public class AreaListFragment extends Fragment implements SwipeRefreshLayout.OnR
         });
     }
 
-    private void initUI(View view) {
-        Log.d(TAG, "UI init");
-
-        initRecyclerView(view);
-        initSwipeRefreshLayout(view);
-        initFAB(view);
-        initToolbar();
-
-        container = view.findViewById(R.id.coordinator_areas_list);
-    }
-
     private void initRecyclerView(View view) {
-        mRecyclerView = view.findViewById(R.id.recycler_areas);
+        mRecyclerView = view.findViewById(R.id.recycler_devices);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(getLayoutManagerForRV());
-        mRecyclerView.addOnScrollListener(new OnScrollRecyclerViewListener());
+        mRecyclerView.addOnScrollListener(new DeviceListFragment.OnScrollRecyclerViewListener());
     }
 
     private void initSwipeRefreshLayout(View view) {
-        mSwipeRefreshLayout = view.findViewById(R.id.swipe_areas_list);
+        mSwipeRefreshLayout = view.findViewById(R.id.swipe_list_devices);
         mSwipeRefreshLayout.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.CYAN);
         mSwipeRefreshLayout.setOnRefreshListener(this);
     }
 
     private void initFAB(View view) {
-        mFloatingActionButton = view.findViewById(R.id.fab_area_create);
+        mFloatingActionButton = view.findViewById(R.id.fab_create_device);
         mFloatingActionButton.setOnClickListener(this);
     }
 
     private void initToolbar() {
         toolbar = requireActivity().findViewById(R.id.toolbar_main);
-        toolbar.setNavigationIcon(R.drawable.ic_menu_24);
-        toolbar.setNavigationOnClickListener(v -> {
-        });
-        toolbar.setTitle(R.string.home);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_24);
+        toolbar.setNavigationOnClickListener(v -> requireActivity().onBackPressed());
+        toolbar.setTitle(R.string.devices);
     }
 
     private RecyclerView.LayoutManager getLayoutManagerForRV() {
@@ -173,7 +175,7 @@ public class AreaListFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     @Override
     public void onClick(View view) {
-        FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+        /*FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
         transaction.addToBackStack(null);
         transaction.setCustomAnimations(
                 R.anim.enter_from_right,
@@ -182,12 +184,13 @@ public class AreaListFragment extends Fragment implements SwipeRefreshLayout.OnR
                 R.anim.exit_to_right
         );
 
-        transaction.replace(R.id.main_fragment_container, new AreaCreationFragment());
-        transaction.commit();
+        transaction.replace(R.id.main_fragment_container, new DeviceCreationFragment());
+        transaction.commit();*/
     }
 
     private void fetchData() {
-        compositeDisposable.add(api.getAll()
+        Log.d(TAG, "Data fetchd");
+        compositeDisposable.add(api.getAllByAreaId(areaId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::displayData, throwable -> {
@@ -204,72 +207,51 @@ public class AreaListFragment extends Fragment implements SwipeRefreshLayout.OnR
                 ));
     }
 
-    private void displayData(List<Area> areas) {
+    private void displayData(List<Device> devices) {
         if (mSwipeRefreshLayout.isRefreshing()) {
             mSwipeRefreshLayout.setRefreshing(false);
         }
 
-        adapter.updateData(areas);
+        adapter.updateData(devices);
         dataFetched = true;
     }
 
     /*
-     ****************** AREA DELETING ************************
+     ****************** DEVICE DELETING ************************
      */
-    public void deleteArea(Integer id) {
-        showConfirmDeleteAreaDialog(id);
+    public void deleteDevice(Integer id) {
+        showConfirmDeleteDeviceDialog(id);
     }
 
-    private void showConfirmDeleteAreaDialog(Integer areaId) {
+    private void showConfirmDeleteDeviceDialog(Integer deviceId) {
         new MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.dialog_title_remove_confirm)
-                .setMessage(R.string.dialog_message_area_remove_confirm)
+                .setMessage(R.string.dialog_message_device_remove_confirm)
                 .setNeutralButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
                 .setPositiveButton(R.string.agree, (dialog, which) -> {
-                    doDeleteAreaRequest(areaId);
+                    doDeleteDeviceRequest(deviceId);
                     dialog.dismiss();
                 })
                 .show();
     }
 
-    private void doDeleteAreaRequest(Integer areaId) {
-        compositeDisposable.add(api.delete(areaId)
+    private void doDeleteDeviceRequest(Integer deviceId) {
+        compositeDisposable.add(api.delete(deviceId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(voidResponse -> {
-                            Snackbar.make(container, R.string.area_successful_deleted,
+                            Snackbar.make(container, R.string.device_successful_deleted,
                                     Snackbar.LENGTH_SHORT)
                                     .show();
                             fetchData();
                         }, throwable -> {
-                            Snackbar.make(container, R.string.area_error_deleted,
+                            Snackbar.make(container, R.string.device_error_deleted,
                                     Snackbar.LENGTH_INDEFINITE)
-                                    .setAction(R.string.retry, v -> doDeleteAreaRequest(areaId))
+                                    .setAction(R.string.retry, v -> doDeleteDeviceRequest(deviceId))
                                     .show();
                             Log.d(TAG, Objects.requireNonNull(throwable.getMessage()));
                         }
                 ));
-    }
-
-    public void goToArea(Integer areaId) {
-        // выззываем фрагмент
-        FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-        transaction.addToBackStack(null);
-        transaction.setCustomAnimations(
-                R.anim.enter_from_right,
-                R.anim.exit_to_left,
-                R.anim.enter_from_left,
-                R.anim.exit_to_right
-        );
-
-        Bundle args = new Bundle();
-        DeviceListFragment newFrag = new DeviceListFragment();
-
-        args.putInt("AREA_ID", areaId);
-        newFrag.setArguments(args);
-
-        transaction.replace(R.id.main_fragment_container, newFrag);
-        transaction.commit();
     }
 
     @Override

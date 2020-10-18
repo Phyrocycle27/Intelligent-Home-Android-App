@@ -42,11 +42,11 @@ public class AreaCreationFragment extends Fragment implements View.OnClickListen
     private CoordinatorLayout container;
     private MaterialToolbar toolbar;
 
-    private Consumer<Area> goToAreasList = areas -> {
+    private final Consumer<Area> goToAreasList = areas -> {
         goBack();
 
         Bundle result = new Bundle();
-        result.putString("bundleKey", AreaCreationStatus.SUCCESS.toString());
+        result.putString("bundleKey", CreationStatus.SUCCESS.toString());
         getParentFragmentManager().setFragmentResult("requestKey", result);
     };
 

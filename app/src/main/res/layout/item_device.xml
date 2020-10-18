@@ -66,14 +66,13 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <LinearLayout
-                android:id="@+id/control_container_device"
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/switch_control_device_signal"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" />
+                android:layout_height="wrap_content" />
 
             <ImageButton
-                android:id="@+id/image_btn_device_more"
+                android:id="@+id/image_btn_more_device"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
