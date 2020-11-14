@@ -15,13 +15,16 @@ import lombok.ToString;
 @EqualsAndHashCode(of = {"id"})
 @AllArgsConstructor
 public class Device {
-
-    private Integer id;
-    private String name;
-    private String description;
-    private int areaId;
-    private boolean reverse;
-    @SerializedName(value = "creation_date")
-    private Date creationDate;
-    private GPIO gpio;
+    private final Long id;
+    private final String name;
+    private final String description;
+    @SerializedName(value = "area_id")
+    private final int areaId;
+    @SerializedName(value = "signal_inversion")
+    private final boolean signalInversion;
+    @SerializedName(value = "creation_timestamp")
+    private final Date creationTimestamp;
+    @SerializedName(value = "update_timestamp")
+    private final Date updateTimestamp;
+    private final GPIO gpio;
 }

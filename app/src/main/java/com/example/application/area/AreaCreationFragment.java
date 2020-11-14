@@ -1,4 +1,4 @@
-package com.example.application;
+package com.example.application.area;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -13,6 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 
+import com.example.application.CreationStatus;
+import com.example.application.R;
 import com.example.application.internet.ServiceGenerator;
 import com.example.application.internet.api.AreaAPI;
 import com.example.application.models.Area;
@@ -72,7 +74,7 @@ public class AreaCreationFragment extends Fragment implements View.OnClickListen
         toolbar = requireActivity().findViewById(R.id.toolbar_main);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_24);
         toolbar.setNavigationOnClickListener(v -> goBack());
-        toolbar.setTitle(R.string.area_creaion);
+        toolbar.setTitle(R.string.area_creation);
     }
 
     @Override
@@ -86,7 +88,7 @@ public class AreaCreationFragment extends Fragment implements View.OnClickListen
                 .trim();
 
         if (name.length() < 3) {
-            nameField.setError(getString(R.string.area_name_too_short));
+            nameField.setError(getString(R.string.name_too_short));
 
         } else {
             Area newArea = new Area(0, name, description);

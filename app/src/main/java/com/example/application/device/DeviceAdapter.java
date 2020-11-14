@@ -1,4 +1,4 @@
-package com.example.application;
+package com.example.application.device;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.application.R;
+import com.example.application.area.AreaViewHolder;
 import com.example.application.models.hardware.Device;
 
 import java.util.ArrayList;

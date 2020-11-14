@@ -1,4 +1,4 @@
-package com.example.application;
+package com.example.application.area;
 
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -18,6 +18,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.application.CreationStatus;
+import com.example.application.R;
+import com.example.application.device.DeviceListFragment;
 import com.example.application.internet.ServiceGenerator;
 import com.example.application.internet.api.AreaAPI;
 import com.example.application.models.Area;
@@ -54,18 +57,13 @@ public class AreaListFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     private AreaAdapter adapter;
 
-    private boolean dataFetched = false;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_areas_list, container, false);
 
         initUI(view);
-
-        if (!dataFetched) {
-            fetchData();
-        }
+        fetchData();
 
         return view;
     }
@@ -210,7 +208,6 @@ public class AreaListFragment extends Fragment implements SwipeRefreshLayout.OnR
         }
 
         adapter.updateData(areas);
-        dataFetched = true;
     }
 
     /*

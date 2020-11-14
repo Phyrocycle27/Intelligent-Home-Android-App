@@ -10,7 +10,7 @@ import lombok.Getter;
 @EqualsAndHashCode(of = {"id"})
 public class Area {
 
-    private Integer id;
-    private String name;
-    private String description;
+    private final Integer id;
+    private final String name;
+    private final String description;
 }

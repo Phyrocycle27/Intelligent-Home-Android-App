@@ -1,4 +1,4 @@
-package com.example.application;
+package com.example.application.area;
 
 import android.view.View;
 import android.widget.ImageButton;
@@ -6,6 +6,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.example.application.CardViewHolder;
+import com.example.application.R;
 import com.example.application.models.Area;
 
 public final class AreaViewHolder extends CardViewHolder<Area> {
@@ -41,11 +43,9 @@ public final class AreaViewHolder extends CardViewHolder<Area> {
 
     @Override
     protected void updateItem() {
-
     }
 
     @Override
     protected void getItemInfo() {
-
     }
 }

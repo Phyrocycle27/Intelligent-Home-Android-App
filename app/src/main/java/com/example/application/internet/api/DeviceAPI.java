@@ -24,20 +24,20 @@ public interface DeviceAPI {
     Observable<List<Device>> getAllBySignalType(@Query("type") SignalType type);
 
     @GET("devices/all")
-    Observable<List<Device>> getAllByAreaId(@Query("areaId") Integer areaId);
+    Observable<List<Device>> getAllByAreaId(@Query("areaId") Long areaId);
 
     @GET("devices/all")
     Observable<List<Device>> getAllByAreaIdAndSignalType(@Query("type") SignalType type,
-                                                         @Query("areaId") Integer areaId);
+                                                         @Query("areaId") Long areaId);
 
     @PUT("devices/one/{id}")
-    Observable<Device> update(@Path("id") Integer id, Device newDevice);
+    Observable<Device> update(@Path("id") Long id, Device newDevice);
 
     @POST("devices/create")
     Observable<Device> create(@Body Device newDevice);
 
     @DELETE("devices/one/{id}")
-    Observable<ResponseBody> delete(@Path("id") Integer id);
+    Observable<ResponseBody> delete(@Path("id") Long id);
 
 
 }

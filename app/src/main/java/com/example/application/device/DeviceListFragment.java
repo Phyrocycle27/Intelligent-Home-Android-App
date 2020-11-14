@@ -1,4 +1,4 @@
-package com.example.application;
+package com.example.application.device;
 
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -12,11 +12,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.application.CreationStatus;
+import com.example.application.R;
 import com.example.application.internet.ServiceGenerator;
 import com.example.application.internet.api.DeviceAPI;
 import com.example.application.models.hardware.Device;
@@ -51,8 +54,7 @@ public class DeviceListFragment extends Fragment implements SwipeRefreshLayout.O
 
     private DeviceAdapter adapter;
 
-    private Integer areaId = -1;
-    private boolean dataFetched = false;
+    private Long areaId = -1L;
 
     @Nullable
     @Override
@@ -61,14 +63,11 @@ public class DeviceListFragment extends Fragment implements SwipeRefreshLayout.O
 
         Bundle args = getArguments();
         if (areaId == -1 && args != null) {
-            areaId = args.getInt("AREA_ID");
+            areaId = args.getLong("AREA_ID");
         }
 
         initUI(view);
-
-        if (!dataFetched) {
-            fetchData();
-        }
+        fetchData();
 
         return view;
     }
@@ -175,7 +174,7 @@ public class DeviceListFragment extends Fragment implements SwipeRefreshLayout.O
 
     @Override
     public void onClick(View view) {
-        /*FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+        FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
         transaction.addToBackStack(null);
         transaction.setCustomAnimations(
                 R.anim.enter_from_right,
@@ -184,22 +183,27 @@ public class DeviceListFragment extends Fragment implements SwipeRefreshLayout.O
                 R.anim.exit_to_right
         );
 
-        transaction.replace(R.id.main_fragment_container, new DeviceCreationFragment());
-        transaction.commit();*/
+        Bundle args = new Bundle();
+        DeviceCreationFragment newFrag = new DeviceCreationFragment();
+        args.putLong("AREA_ID", areaId);
+        newFrag.setArguments(args);
+
+        transaction.replace(R.id.main_fragment_container, newFrag);
+        transaction.commit();
     }
 
     private void fetchData() {
-        Log.d(TAG, "Data fetchd");
+        Log.d(TAG, "Data fetch");
         compositeDisposable.add(api.getAllByAreaId(areaId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::displayData, throwable -> {
-                            if (mSwipeRefreshLayout.isRefreshing()) {
-                                mSwipeRefreshLayout.setRefreshing(false);
-                            }
-                            Snackbar.make(container, R.string.error_downloading_data,
-                                    Snackbar.LENGTH_INDEFINITE)
-                                    .setAction(R.string.retry, v -> fetchData())
+                    if (mSwipeRefreshLayout.isRefreshing()) {
+                        mSwipeRefreshLayout.setRefreshing(false);
+                    }
+                    Snackbar.make(container, R.string.error_downloading_data,
+                            Snackbar.LENGTH_INDEFINITE)
+                            .setAction(R.string.retry, v -> fetchData())
                                     .show();
 
                             Log.d(TAG, Objects.requireNonNull(throwable.getMessage()));
@@ -213,17 +217,16 @@ public class DeviceListFragment extends Fragment implements SwipeRefreshLayout.O
         }
 
         adapter.updateData(devices);
-        dataFetched = true;
     }
 
     /*
      ****************** DEVICE DELETING ************************
      */
-    public void deleteDevice(Integer id) {
+    public void deleteDevice(Long id) {
         showConfirmDeleteDeviceDialog(id);
     }
 
-    private void showConfirmDeleteDeviceDialog(Integer deviceId) {
+    private void showConfirmDeleteDeviceDialog(Long deviceId) {
         new MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.dialog_title_remove_confirm)
                 .setMessage(R.string.dialog_message_device_remove_confirm)
@@ -235,7 +238,7 @@ public class DeviceListFragment extends Fragment implements SwipeRefreshLayout.O
                 .show();
     }
 
-    private void doDeleteDeviceRequest(Integer deviceId) {
+    private void doDeleteDeviceRequest(Long deviceId) {
         compositeDisposable.add(api.delete(deviceId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

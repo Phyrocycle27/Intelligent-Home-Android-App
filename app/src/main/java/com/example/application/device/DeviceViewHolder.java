@@ -1,4 +1,4 @@
-package com.example.application;
+package com.example.application.device;
 
 import android.util.Log;
 import android.view.View;
@@ -7,6 +7,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.example.application.CardViewHolder;
+import com.example.application.R;
 import com.example.application.models.hardware.Device;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 

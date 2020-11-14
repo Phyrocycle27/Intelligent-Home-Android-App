@@ -4,8 +4,8 @@ import android.os.Bundle;
 
 import androidx.fragment.app.FragmentActivity;
 
-import com.example.application.AreaListFragment;
 import com.example.application.R;
+import com.example.application.area.AreaListFragment;
 
 public class MainActivity extends FragmentActivity {
 
